@@ -8,12 +8,12 @@ LOG_FILE="/tmp/postinstall-$DATE.log"
 LISTE="curl openvpn whois vim"
 SOURCES_LIST="https://raw.githubusercontent.com/hotfix31/pve-postinstall/master/sources.list"
 BASHRC_FILE="https://raw.githubusercontent.com/hotfix31/debian-postinstall/master/.bashrc"
+PATCH_PVE="https://raw.githubusercontent.com/hotfix31/pve-postinstall/master/no-valid-subsciption.patch"
 
 displaytitle() {
   displaymessage "------------------------------------------------------------------------------"
   displaymessage "$*"
   displaymessage "------------------------------------------------------------------------------"
-
 }
 
 displaymessage() {
@@ -53,6 +53,7 @@ displayandexec() {
 displaytitle "-- Téléchargement du fichier sources.list
 -- $SOURCES_LIST"
 displayandexec "Archivage du fichier sources.list actuel" cp /etc/apt/sources.list /etc/apt/sources.list-orginal
+displayandexec "Désactiver la source pve-enterprise" sed -i -e "s/^deb/#deb/g" /etc/apt/sources.list.d/pve-enterprise.list
 displayandexec "Téléchargement du nouveau fichier sources.list" $WGET -O /etc/apt/sources.list $SOURCES_LIST
 
 displaytitle "-- Mise à jour du système"
@@ -71,3 +72,5 @@ displayandexec "Téléchargement du nouveau fichier .bashrc" $WGET -O /root/.bas
 
 displayandexec "Archivage du fichier bootlogd actuel" cp /etc/default/bootlogd /etc/default/bootlogd.original
 displayandexec "Ajout d'une option dans bootlogd" echo "BOOTLOGD_ENABLE=Yes" >> /etc/default/bootlogd
+
+displayandexec "Cacher la popup 'no valid subscription'" wget -O - $PATCH_PVE | patch -p0
