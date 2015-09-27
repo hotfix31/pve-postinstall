@@ -16,6 +16,10 @@ displaytitle() {
 
 }
 
+displaymessage() {
+  echo "$*"
+}
+
 displayerror() {
   displaymessage "$*" >&2
 }
