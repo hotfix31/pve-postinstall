@@ -1,0 +1,4 @@
+deb http://debian.mirrors.ovh.net/debian/ wheezy main contrib
+deb http://download.proxmox.com/debian wheezy pve-no-subscription
+deb http://security.debian.org/ wheezy/updates main contrib
+
